@@ -1,0 +1,10 @@
+*.js
+!jest.config.js
+*.d.ts
+node_modules
+
+# JetBrains
+.idea
+
+# Mac OS
+.DS_Store
