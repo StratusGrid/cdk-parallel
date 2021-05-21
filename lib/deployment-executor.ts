@@ -41,6 +41,6 @@ export class DeploymentExecutor {
             StackDependencies.removeDependency(stack, stackDependencyGraph ?? {})
         });
 
-        this.run(stackDependencyGraph);
+        this.run(sdg);
     }
 }

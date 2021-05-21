@@ -29,7 +29,7 @@ export class DeployCommand {
         if (this.type === DeploymentType.DEPLOY) {
             command = `cdk deploy ${appStack}`;
         } else if (this.type === DeploymentType.DESTROY) {
-            command = `cdk deploy ${appStack}`;
+            command = `cdk destroy ${appStack}`;
         } else {
             throw new Error("Invalid enum value.");
         }

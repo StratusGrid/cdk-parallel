@@ -30,7 +30,7 @@ export class StackDependencies {
             const artifact = data.artifacts[key];
 
             if (artifact["type"] === "aws:cloudformation:stack") {
-                const dependencies: string[] = artifact.get('dependencies', []);
+                const dependencies: string[] = artifact["dependencies"] ?? [];
                 stackDependencyGraph[key] = dependencies.filter((d: string) => stacks.includes(d));
             }
         });
