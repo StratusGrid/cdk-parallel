@@ -39,7 +39,10 @@ export class DeployCommand {
 
         cprint(PrintColors.FG_BLUE, `Executing command: ${command}.`);
 
-        const child = spawn(command);
+        const child = spawn(command, {
+            cwd: this.path,
+            env: this.environment
+        });
 
         process.stdin.pipe(child.stdin)
 
