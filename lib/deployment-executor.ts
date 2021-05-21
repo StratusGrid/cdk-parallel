@@ -17,13 +17,13 @@ export class DeploymentExecutor {
         this.maxParallelDeployments = maxParallelDeployments;
     }
 
-    public run(stackDependencyGraph?: { [key: string]: string[] }): void {
+    public async run(stackDependencyGraph?: { [key: string]: string[] }) {
         if (stackDependencyGraph !== undefined && Object.keys(stackDependencyGraph).length) {
             cprint(PrintColors.FG_BLUE, 'No more stacks to deploy. Exiting...');
             return;
         }
 
-        const sdg = stackDependencyGraph === undefined ? StackDependencies.generateGraph(this.path, this.environment) : stackDependencyGraph;
+        const sdg = stackDependencyGraph === undefined ? await StackDependencies.generateGraph(this.path, this.environment) : stackDependencyGraph;
         cprint(PrintColors.FG_BLUE, `Stack dependency graph:\n${JSON.stringify(stackDependencyGraph, null, 4)}.`);
 
         const deployableStacks: string[] = [];
@@ -41,6 +41,6 @@ export class DeploymentExecutor {
             StackDependencies.removeDependency(stack, stackDependencyGraph ?? {})
         });
 
-        this.run(sdg);
+        await this.run(sdg);
     }
 }
