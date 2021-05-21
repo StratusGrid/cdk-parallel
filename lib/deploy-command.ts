@@ -34,12 +34,13 @@ export class DeployCommand {
             throw new Error("Invalid enum value.");
         }
 
-        //commands.push(`--output=./cdk_stacks/${this.stack}`, `--progress events --require-approval never`)
+        commands.push(`--output=./cdk_stacks/${this.stack}`, `--progress events --require-approval never`)
 
         cprint(PrintColors.FG_BLUE, `Executing command: cdk ${commands.join(' ')}.`);
 
         const child = spawn('cdk', commands, {
             cwd: this.path,
+            shell: 'bash',
             env: {
                 PATH: process.env.PATH
             }
