@@ -12,7 +12,7 @@ export class CdkSynth {
      */
     public static async execute(path?: string, environment?: { [key: string]: string | undefined }) {
         await new Promise(((resolve, reject) => {
-            exec("cdk synth *", {
+            exec("cdk synth \"*\"", {
                 cwd: path,
                 env: environment
             }, ((error, stdout, stderr) => {

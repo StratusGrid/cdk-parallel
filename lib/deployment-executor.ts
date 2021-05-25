@@ -18,7 +18,7 @@ export class DeploymentExecutor {
     }
 
     public async run(stackDependencyGraph?: { [key: string]: string[] }) {
-        if (stackDependencyGraph !== undefined && Object.keys(stackDependencyGraph).length) {
+        if (stackDependencyGraph !== undefined && Object.keys(stackDependencyGraph).length === 0) {
             cprint(PrintColors.FG_BLUE, 'No more stacks to deploy. Exiting...');
             return;
         }
@@ -38,7 +38,7 @@ export class DeploymentExecutor {
 
         deployableStacks.forEach(stack => {
             cprint(PrintColors.FG_BLUE, `Removing stack ${stack} from the graph as it was successfully deployed...`)
-            StackDependencies.removeDependency(stack, stackDependencyGraph ?? {})
+            StackDependencies.removeDependency(stack, sdg ?? {})
         });
 
         await this.run(sdg);
