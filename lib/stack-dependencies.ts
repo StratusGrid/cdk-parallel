@@ -11,7 +11,7 @@ export class StackDependencies {
      * @param environment
      */
     public static async generateGraph(path?: string, environment?: { [key: string]: string | undefined }) {
-        //await CdkSynth.execute(path, environment);
+        await CdkSynth.execute(path, environment);
 
         const file = fs.readFileSync(`${path}/cdk.out/manifest.json`, 'utf-8');
         const data = JSON.parse(file);
