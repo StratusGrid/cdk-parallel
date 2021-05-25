@@ -30,15 +30,15 @@ export class DeploymentExecutor {
         Object.keys(sdg).forEach(stack => {
             const dependency = sdg[stack];
             if (dependency.length === 0) {
-                cprint(PrintColors.FG_BLUE, `Stack ${stack} has no dependencies, deploying...`)
+                cprint(PrintColors.FG_BLUE, `Stack ${stack} has no dependencies, deploying...`);
                 deployableStacks.push(stack);
-                (new DeployCommand(stack, this.type, this.path, this.environment)).execute()
+                (new DeployCommand(stack, this.type, this.path, this.environment)).execute();
             }
-        })
+        });
 
         deployableStacks.forEach(stack => {
-            cprint(PrintColors.FG_BLUE, `Removing stack ${stack} from the graph as it was successfully deployed...`)
-            StackDependencies.removeDependency(stack, sdg ?? {})
+            cprint(PrintColors.FG_BLUE, `Removing stack ${stack} from the graph as it was successfully deployed...`);
+            StackDependencies.removeDependency(stack, sdg ?? {});
         });
 
         await this.run(sdg);

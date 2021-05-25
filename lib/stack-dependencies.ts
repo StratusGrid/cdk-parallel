@@ -55,7 +55,7 @@ export class StackDependencies {
             const dependencies = stackDependencyGraph[value];
             if (dependencies.includes(stack)) {
                 stackDependencyGraph[value] = dependencies.filter((value1 => {
-                    return value1 === stack;
+                    return value1 !== stack;
                 }));
             }
         });
