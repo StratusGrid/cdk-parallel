@@ -1,12 +1,42 @@
-# Welcome to your CDK TypeScript Construct Library project!
+# CDK Parallel for Typescript/Javascript
 
-You should explore the contents of this project. It demonstrates a CDK Construct Library that includes a construct (`SpdkParallel`)
-which contains an Amazon SQS queue that is subscribed to an Amazon SNS topic.
+[![NPM version](https://img.shields.io/npm/v/@stratusgrid/cdk-parallel?style=flat-square)](https://www.npmjs.com/package/@stratusgrid/cdk-parallel)
+[![Youtube channel views](https://img.shields.io/youtube/channel/views/UCQtFai6GXG5YSXpl1geP5LQ?style=social)](https://www.youtube.com/channel/UCQtFai6GXG5YSXpl1geP5LQ)
 
-The construct defines an interface (`SpdkParallelProps`) to configure the visibility timeout of the queue.
+A Javascript based library that enables AWS CDK parallel stack deployments.
 
-## Useful commands
+## Table of Contents
+* [Getting Started](#getting-started)
+* [Usage](#usage)
+* [Credits](#credits)
 
- * `npm run build`   compile typescript to js
- * `npm run watch`   watch for changes and compile
- * `npm run test`    perform the jest unit tests
+## Getting Started
+
+### In Node.js
+
+The preferred way to install the StratusGrid CDK Parallel for Node.js is to use the [npm](http://npmjs.org) package manager for Node.js. Simply type the following into a terminal window:
+
+```sh
+npm install @stratusgrid/cdk-parallel
+```
+
+## Usage
+
+### In Typescript
+
+It is suggested you create a typescript file in the root of your CDK app. Then you can run the file with this code:
+
+```typescript
+import {DeploymentExecutor, DeploymentType} from '@stratusgrid/cdk-parallel';
+
+(async function () {
+    const executor = new DeploymentExecutor(DeploymentType.DEPLOY, __dirname, {
+        PATH: process.env.PATH
+    });
+    await executor.run();
+}());
+```
+
+## Credits
+
+* [Biomapas/B.AwsCdkParallel](https://github.com/biomapas/B.AwsCdkParallel)

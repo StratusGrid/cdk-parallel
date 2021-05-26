@@ -1,4 +1,4 @@
-import { exec } from "child_process";
+import {exec, ExecException} from "child_process";
 
 export class CdkSynth {
 
@@ -10,17 +10,17 @@ export class CdkSynth {
      *
      * @return void
      */
-    public static async execute(path?: string, environment?: { [key: string]: string | undefined }) {
-        await new Promise(((resolve, reject) => {
+    public static async execute(path?: string, environment?: { [key: string]: string | undefined }): Promise<string> {
+        return new Promise((resolve, reject) => {
             exec("cdk synth \"*\"", {
                 cwd: path,
                 env: environment
-            }, ((error, stdout, stderr) => {
+            }, (error: ExecException | null, stdout: string, stderr: string) => {
                 if (error) {
                     reject(error);
                 }
                 resolve(stdout);
-            }));
-        }));
+            });
+        });
     }
 }
