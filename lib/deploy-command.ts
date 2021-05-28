@@ -41,9 +41,7 @@ export class DeployCommand {
         const child = spawn('cdk', commands, {
             cwd: this.path,
             shell: 'bash',
-            env: {
-                PATH: process.env.PATH
-            }
+            env: this.environment
         });
 
         process.stdin.pipe(child.stdin);
