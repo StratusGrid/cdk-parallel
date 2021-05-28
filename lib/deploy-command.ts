@@ -27,9 +27,9 @@ export class DeployCommand {
 
         const commands: string[] = [];
         if (this.type === DeploymentType.DEPLOY) {
-            commands.push(`deploy ${appStack}`);
+            commands.push(`deploy -v ${appStack}`);
         } else if (this.type === DeploymentType.DESTROY) {
-            commands.push(`destroy ${appStack}`);
+            commands.push(`destroy -v ${appStack}`);
         } else {
             throw new Error("Invalid enum value.");
         }
