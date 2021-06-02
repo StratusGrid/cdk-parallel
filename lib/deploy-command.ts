@@ -9,12 +9,14 @@ export class DeployCommand {
     private readonly type: DeploymentType
     private readonly path?: string
     private readonly environment?: { [key: string]: string | undefined }
+    private readonly verboseMode: boolean
 
-    constructor(stack: string, type: DeploymentType, path?: string, environment?: { [key: string]: string | undefined }) {
+    constructor(stack: string, type: DeploymentType, path?: string, environment?: { [key: string]: string | undefined }, verboseMode: boolean = false) {
         this.stack = stack;
         this.type = type;
         this.path = path;
         this.environment = environment;
+        this.verboseMode = verboseMode;
     }
 
     /**
@@ -27,11 +29,15 @@ export class DeployCommand {
 
         const commands: string[] = [];
         if (this.type === DeploymentType.DEPLOY) {
-            commands.push(`deploy -v ${appStack}`);
+            commands.push(`deploy ${appStack}`);
         } else if (this.type === DeploymentType.DESTROY) {
-            commands.push(`destroy -v ${appStack}`);
+            commands.push(`destroy ${appStack}`);
         } else {
             throw new Error("Invalid enum value.");
+        }
+
+        if (this.verboseMode) {
+            commands.push(`-v`);
         }
 
         commands.push(`--output=./cdk_stacks/${this.stack}`, `--progress events --require-approval never`)

@@ -8,13 +8,16 @@ export class DeploymentExecutor {
     private readonly type: DeploymentType
     private readonly path?: string
     private readonly environment?: { [key: string]: string | undefined }
-    private readonly maxParallelDeployments: number
 
-    constructor(type: DeploymentType, path?: string, environment?: { [key: string]: string | undefined }, maxParallelDeployments: number = 100) {
+    private readonly maxParallelDeployments: number
+    private readonly verboseMode: boolean
+
+    constructor(type: DeploymentType, path?: string, environment?: { [key: string]: string | undefined }, maxParallelDeployments: number = 100, verboseMode: boolean = false) {
         this.type = type;
         this.path = path;
         this.environment = environment;
         this.maxParallelDeployments = maxParallelDeployments;
+        this.verboseMode = verboseMode;
     }
 
     public async run(stackDependencyGraph?: { [key: string]: string[] }) {
@@ -32,7 +35,7 @@ export class DeploymentExecutor {
             if (dependency.length === 0) {
                 cprint(PrintColors.FG_BLUE, `Stack ${stack} has no dependencies, deploying...`);
                 deployableStacks.push(stack);
-                (new DeployCommand(stack, this.type, this.path, this.environment)).execute();
+                (new DeployCommand(stack, this.type, this.path, this.environment, this.verboseMode)).execute();
             }
         });
 
