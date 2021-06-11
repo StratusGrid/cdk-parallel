@@ -6,3 +6,6 @@
 cdk.out
 
 .idea
+
+# Jest
+jest.config.js

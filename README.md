@@ -3,7 +3,7 @@
 [![NPM version](https://img.shields.io/npm/v/@stratusgrid/cdk-parallel?style=flat-square)](https://www.npmjs.com/package/@stratusgrid/cdk-parallel)
 [![Youtube channel views](https://img.shields.io/youtube/channel/views/UCQtFai6GXG5YSXpl1geP5LQ?style=social)](https://www.youtube.com/channel/UCQtFai6GXG5YSXpl1geP5LQ)
 
-A Javascript based library that enables AWS CDK parallel stack deployments.
+A Javascript based library that enables AWS CDK to deploy stacks in parallel.
 
 ## Table of Contents
 * [Getting Started](#getting-started)
@@ -14,7 +14,7 @@ A Javascript based library that enables AWS CDK parallel stack deployments.
 
 ### In Node.js
 
-The preferred way to install the StratusGrid CDK Parallel for Node.js is to use the [npm](http://npmjs.org) package manager for Node.js. Simply type the following into a terminal window:
+The preferred way to install the StratusGrid CDK Parallelization library for Node.js is to use the [npm](http://npmjs.org) package manager for Node.js. Simply type the following into a terminal window:
 
 ```sh
 npm install @stratusgrid/cdk-parallel

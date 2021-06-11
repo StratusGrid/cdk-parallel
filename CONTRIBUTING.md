@@ -4,4 +4,4 @@
 
 The following is a set of guidelines for contributing to CDK Parallel, which are hosted in the StratusGrid Organization on GitHub. These are mostly guidelines, not rules. Use your best judgment!
 
-Contributions of any kind are gladly welcome. You may contact us directly, create a PR or an issue in github platform.
+Contributions of any kind are gladly welcome. You may contact us directly, create a PR, or an issue in github platform.
