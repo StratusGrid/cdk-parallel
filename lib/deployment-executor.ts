@@ -29,21 +29,32 @@ export class DeploymentExecutor {
         const sdg = stackDependencyGraph === undefined ? await StackDependencies.generateGraph(this.path, this.environment) : stackDependencyGraph;
         cprint(PrintColors.FG_BLUE, `Stack dependency graph:\n${JSON.stringify(stackDependencyGraph, null, 4)}.`);
 
+        let children: number = 0;
         const deployableStacks: string[] = [];
         Object.keys(sdg).forEach(stack => {
             const dependency = sdg[stack];
             if (dependency.length === 0) {
                 cprint(PrintColors.FG_BLUE, `Stack ${stack} has no dependencies, deploying...`);
                 deployableStacks.push(stack);
-                (new DeployCommand(stack, this.type, this.path, this.environment, this.verboseMode)).execute();
+                children++;
+
+                const child = new DeployCommand(stack, this.type, this.path, this.environment, this.verboseMode);
+                child.execute()
+                    .then(async () => {
+                        children--;
+                        if (children <= 0) {
+                            deployableStacks.forEach(stack => {
+                                cprint(PrintColors.FG_BLUE, `Removing stack ${stack} from the graph as it was successfully deployed...`);
+                                StackDependencies.removeDependency(stack, sdg ?? {});
+                            });
+
+                            await this.run(sdg);
+                        }
+                    })
+                    .catch((e) => {
+                        throw e;
+                    });
             }
         });
-
-        deployableStacks.forEach(stack => {
-            cprint(PrintColors.FG_BLUE, `Removing stack ${stack} from the graph as it was successfully deployed...`);
-            StackDependencies.removeDependency(stack, sdg ?? {});
-        });
-
-        await this.run(sdg);
     }
 }

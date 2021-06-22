@@ -24,7 +24,7 @@ export class DeployCommand {
      *
      * @return void
      */
-    public execute(): void {
+    public execute(): Promise<void> {
         const appStack = `--app 'cdk.out/' ${this.stack}`;
 
         const commands: string[] = [];
@@ -57,5 +57,18 @@ export class DeployCommand {
         child.stdout.on('data', (data) => {
             console.log(`child stdout:\n${data}`);
         });
+
+        return new Promise(((resolve, reject) => {
+            child.on('error', reject)
+
+            child.on('close', code => {
+                if (code === 0) {
+                    resolve()
+                } else {
+                    const err = new Error(`child exited with code ${code}`);
+                    reject(err)
+                }
+            })
+        }));
     }
 }
