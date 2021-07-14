@@ -1,5 +1,5 @@
 import * as cp from "child_process";
-import {DeployCommand} from "../lib/deploy-command";
+import {CdkCommand} from "../lib/cdk-command";
 import {DeploymentType} from "../lib";
 
 describe(`Testing deploy command class`, () => {
@@ -23,7 +23,11 @@ describe(`Testing deploy command class`, () => {
                 return this;
             });
 
-        const actual = new DeployCommand("test-stack", DeploymentType.DEPLOY);
+        const actual = new CdkCommand({
+            stack: "test-stack",
+            type: DeploymentType.DEPLOY,
+            verboseMode: false
+        });
         actual.execute();
 
         /*expect(cp.spawn).toBeCalledWith("cdk", [

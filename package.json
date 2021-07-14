@@ -1,10 +1,10 @@
 {
   "name": "@stratusgrid/cdk-parallel",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/stratusgrid/cdk-parallel/issues",
-    "email": "project@hostname.com"
+    "email": "cdk-parallel@stratusgrid.com"
   },
   "main": "lib/index.js",
   "types": "lib/index.d.ts",

@@ -1,22 +1,37 @@
-import { spawn } from "child_process";
+import {spawn} from "child_process";
 
-import { DeploymentType } from "./deployment-type";
-import { cprint } from "./color-print";
-import { PrintColors } from "./print-colors";
+import {DeploymentType} from "./deployment-type";
+import {cprint} from "./color-print";
+import {PrintColors} from "./print-colors";
 
-export class DeployCommand {
+export interface CdkCommandProps {
+    stack: string
+    type: DeploymentType
+    verboseMode: boolean
+    path?: string
+    environment?: { [key: string]: string | undefined }
+    deployOpts?: DeployOptions
+}
+
+export interface DeployOptions {
+    outputsFile?: string
+}
+
+export class CdkCommand {
     private readonly stack: string
     private readonly type: DeploymentType
     private readonly path?: string
     private readonly environment?: { [key: string]: string | undefined }
     private readonly verboseMode: boolean
+    private readonly deployOpts?: DeployOptions
 
-    constructor(stack: string, type: DeploymentType, path?: string, environment?: { [key: string]: string | undefined }, verboseMode: boolean = false) {
-        this.stack = stack;
-        this.type = type;
-        this.path = path;
-        this.environment = environment;
-        this.verboseMode = verboseMode;
+    constructor(props: CdkCommandProps) {
+        this.stack = props.stack;
+        this.type = props.type;
+        this.path = props.path;
+        this.environment = props.environment;
+        this.verboseMode = props.verboseMode;
+        this.deployOpts = props.deployOpts;
     }
 
     /**
@@ -30,6 +45,10 @@ export class DeployCommand {
         const commands: string[] = [];
         if (this.type === DeploymentType.DEPLOY) {
             commands.push(`deploy ${appStack}`);
+
+            if (this.deployOpts?.outputsFile !== undefined) {
+                commands.push(`--outputs-file ${this.deployOpts.outputsFile}`)
+            }
         } else if (this.type === DeploymentType.DESTROY) {
             commands.push(`destroy ${appStack}`);
         } else {

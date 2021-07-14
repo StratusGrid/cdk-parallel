@@ -1,8 +1,8 @@
-import { DeploymentType } from "./deployment-type";
-import { cprint } from "./color-print";
-import { PrintColors } from "./print-colors";
-import { StackDependencies } from "./stack-dependencies";
-import { DeployCommand } from "./deploy-command";
+import {DeploymentType} from "./deployment-type";
+import {cprint} from "./color-print";
+import {PrintColors} from "./print-colors";
+import {StackDependencies} from "./stack-dependencies";
+import {CdkCommand} from "./cdk-command";
 
 export class DeploymentExecutor {
     private readonly type: DeploymentType
@@ -38,14 +38,23 @@ export class DeploymentExecutor {
                 deployableStacks.push(stack);
                 children++;
 
-                const child = new DeployCommand(stack, this.type, this.path, this.environment, this.verboseMode);
+                const child = new CdkCommand({
+                    stack: stack,
+                    type: this.type,
+                    path: this.path,
+                    environment: this.environment,
+                    verboseMode: this.verboseMode,
+                    deployOpts: this.type === DeploymentType.DEPLOY ? {
+                        outputsFile: `./cdk-outputs/${stack}`
+                    } : undefined
+                });
                 child.execute()
                     .then(async () => {
                         children--;
                         if (children <= 0) {
-                            deployableStacks.forEach(stack => {
-                                cprint(PrintColors.FG_BLUE, `Removing stack ${stack} from the graph as it was successfully deployed...`);
-                                StackDependencies.removeDependency(stack, sdg ?? {});
+                            deployableStacks.forEach(dStack => {
+                                cprint(PrintColors.FG_BLUE, `Removing stack ${dStack} from the graph as it was successfully deployed...`);
+                                StackDependencies.removeDependency(dStack, sdg ?? {});
                             });
 
                             await this.run(sdg);
