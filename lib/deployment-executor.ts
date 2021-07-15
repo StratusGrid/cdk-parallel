@@ -45,7 +45,7 @@ export class DeploymentExecutor {
                     environment: this.environment,
                     verboseMode: this.verboseMode,
                     deployOpts: this.type === DeploymentType.DEPLOY ? {
-                        outputsFile: `./cdk-outputs/${stack}`
+                        outputsFile: `./cdk-outputs.json`
                     } : undefined
                 });
                 child.execute()
