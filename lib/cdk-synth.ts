@@ -18,8 +18,9 @@ export class CdkSynth {
             }, (error: ExecException | null, stdout: string, stderr: string) => {
                 if (error) {
                     reject(error);
+                } else {
+                    resolve(stdout);
                 }
-                resolve(stdout);
             });
         });
     }
