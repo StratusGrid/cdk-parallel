@@ -1,6 +1,6 @@
-import {DeploymentType} from "./deployment-type";
+import {DeploymentType} from "./types/deployment-type";
 import {cprint} from "./color-print";
-import {PrintColors} from "./print-colors";
+import {PrintColors} from "./types/print-colors";
 import {StackDependencies} from "./stack-dependencies";
 import {CdkCommand} from "./cdk-command";
 import { EnvironmentDeclaration } from "./types/environment-declaration";

@@ -1,8 +1,8 @@
 import {spawn} from "child_process";
 
-import {DeploymentType} from "./deployment-type";
+import {DeploymentType} from "./types/deployment-type";
 import {cprint} from "./color-print";
-import {PrintColors} from "./print-colors";
+import {PrintColors} from "./types/print-colors";
 import { EnvironmentDeclaration } from "./types/environment-declaration";
 
 export interface CdkCommandProps {
