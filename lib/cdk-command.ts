@@ -3,13 +3,14 @@ import {spawn} from "child_process";
 import {DeploymentType} from "./deployment-type";
 import {cprint} from "./color-print";
 import {PrintColors} from "./print-colors";
+import { EnvironmentDeclaration } from "./types/environment-declaration";
 
 export interface CdkCommandProps {
     stack: string
     type: DeploymentType
     verboseMode: boolean
     path?: string
-    environment?: { [key: string]: string | undefined }
+    environment?: EnvironmentDeclaration
     deployOpts?: DeployOptions
 }
 
@@ -21,7 +22,7 @@ export class CdkCommand {
     private readonly stack: string
     private readonly type: DeploymentType
     private readonly path?: string
-    private readonly environment?: { [key: string]: string | undefined }
+    private readonly environment?: EnvironmentDeclaration
     private readonly verboseMode: boolean
     private readonly deployOpts?: DeployOptions
 
