@@ -12,6 +12,10 @@
     "type": "git",
     "url": "https://github.com/stratusgrid/cdk-parallel.git"
   },
+  "files": [
+    "lib/**/*.js",
+    "lib/**/*.d.ts"
+  ],
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w",
