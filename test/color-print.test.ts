@@ -1,5 +1,5 @@
 import {cprint} from "../lib/color-print";
-import {PrintColors} from "../lib/print-colors";
+import {PrintColors} from "../lib/types/print-colors";
 
 describe(`Testing the color print function`, () => {
 

@@ -1,2 +1,2 @@
 export { DeploymentExecutor } from './deployment-executor';
-export { DeploymentType } from './deployment-type';
+export { DeploymentType } from './types/deployment-type';

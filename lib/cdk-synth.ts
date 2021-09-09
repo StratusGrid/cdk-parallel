@@ -1,4 +1,5 @@
 import {exec, ExecException} from "child_process";
+import { EnvironmentDeclaration } from "./types/environment-declaration";
 
 export class CdkSynth {
 
@@ -10,7 +11,10 @@ export class CdkSynth {
      *
      * @return void
      */
-    public static async execute(path?: string, environment?: { [key: string]: string | undefined }): Promise<string> {
+    public static async execute(
+        path?: string,
+        environment?: EnvironmentDeclaration,
+    ): Promise<string> {
         return new Promise((resolve, reject) => {
             exec("cdk synth \"*\"", {
                 cwd: path,

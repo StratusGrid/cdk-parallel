@@ -1,5 +1,7 @@
 import * as fs from 'fs';
 import {CdkSynth} from "./cdk-synth";
+import { DependencyGraph } from './types/dependency-graph';
+import { EnvironmentDeclaration } from './types/environment-declaration';
 
 export class StackDependencies {
     /**
@@ -10,7 +12,10 @@ export class StackDependencies {
      * @param path
      * @param environment
      */
-    public static async generateGraph(path?: string, environment?: { [key: string]: string | undefined }) {
+    public static async generateGraph(
+        path?: string,
+        environment?: EnvironmentDeclaration,
+    ): Promise<DependencyGraph> {
         await CdkSynth.execute(path, environment);
 
         const file = fs.readFileSync(`${path}/cdk.out/manifest.json`, 'utf-8');
@@ -25,7 +30,7 @@ export class StackDependencies {
             }
         });
 
-        const stackDependencyGraph: { [key: string]: string[] } = {};
+        const stackDependencyGraph: DependencyGraph = {};
         Object.keys(data.artifacts).forEach((key: string) => {
             const artifact = data.artifacts[key];
 
@@ -46,7 +51,10 @@ export class StackDependencies {
      * @param stack
      * @param stackDependencyGraph
      */
-    public static removeDependency(stack: string, stackDependencyGraph: { [key: string]: string[] }): void {
+    public static removeDependency(
+        stack: string,
+        stackDependencyGraph: DependencyGraph,
+    ): void {
         if (stackDependencyGraph.hasOwnProperty(stack)) {
             delete stackDependencyGraph[stack];
         }
