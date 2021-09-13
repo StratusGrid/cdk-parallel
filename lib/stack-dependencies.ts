@@ -68,4 +68,13 @@ export class StackDependencies {
             }
         });
     }
+
+    public static getDeployableStacks(
+        stackDependencyGraph: DependencyGraph,
+        options: { maxStacks: number },
+    ): string[] {
+        return Object.keys(stackDependencyGraph)
+            .filter((stack) => !stackDependencyGraph[stack].length) // deployable stacks have no dependencies
+            .splice(0, options.maxStacks); // return no more that maxStacks
+    }
 }
