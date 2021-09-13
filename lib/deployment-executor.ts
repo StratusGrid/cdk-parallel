@@ -6,7 +6,9 @@ import {CdkCommand} from "./cdk-command";
 import { EnvironmentDeclaration } from "./types/environment-declaration";
 import { DependencyGraph } from "./types/dependency-graph";
 
+/** Manages parallel cdk deployments. The cdk-toolkit cli must be installed on the host machine. */
 export class DeploymentExecutor {
+    /** Whether or not the executor is currently managing active deployments. */
     public get isRunning(): boolean {
         return this._isRunning;
     }
@@ -20,6 +22,13 @@ export class DeploymentExecutor {
 
     private _isRunning = false;
 
+    /**
+     * @param type The type of the deployment
+     * @param path The path to the cdk project root, defaults to CWD
+     * @param environment Map of environment variables that will be exposed to the cdk app
+     * @param maxParallelDeployments The maximum number of simultaneous deployments
+     * @param verboseMode Enbles verbose logging
+     */
     constructor(
         type: DeploymentType,
         path?: string,
@@ -34,6 +43,22 @@ export class DeploymentExecutor {
         this.verboseMode = verboseMode;
     }
 
+    /**
+     * Executes cdk deployments in parallel.
+     *
+     * If any deployment fails, current deployments will run to completion or
+     * error, but no new deployments will start.
+     *
+     * NOTE: It is an error to call this method while this DeploymentExecutor is
+     * currently running. If the state of the executor is uncertain, check the
+     * `isRunning` member
+     *
+     * @param stackDependencyGraph Optional graph of specific stacks to deploy
+     *   and their dependencies, defaults to all stacks in the app
+     *
+     * @returns A promise that resolves when all deployments successfully finish
+     * or is rejected when any deployment fails and ongoing deployments remain
+     */
     public async run(stackDependencyGraph?: DependencyGraph): Promise<void> {
         if (this.isRunning) throw new Error('Deployment(s) already in progress.');
         this._isRunning = true;
