@@ -1,6 +1,6 @@
 {
   "name": "@stratusgrid/cdk-parallel",
-  "version": "1.2.4",
+  "version": "2.0.0",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/stratusgrid/cdk-parallel/issues",
