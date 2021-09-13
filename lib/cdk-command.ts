@@ -74,10 +74,6 @@ export class CdkCommand {
         child.stdout.pipe(process.stdout);
         child.stderr.pipe(process.stderr);
 
-        child.stdout.on('data', (data) => {
-            console.log(`child stdout:\n${data}`);
-        });
-
         return new Promise(((resolve, reject) => {
             child.on('error', reject)
 
