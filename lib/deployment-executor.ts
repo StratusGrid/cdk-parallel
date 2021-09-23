@@ -75,14 +75,12 @@ export class DeploymentExecutor {
                 });
 
                 deployableStacks.forEach((stack) => {
-                    if (deploymentsMap.has(stack)) {
-                        throw new Error('Attempted to deploy a stack that was already deploying.')
+                    if (!deploymentsMap.has(stack)) {
+                        deploymentsMap.set(stack, this.deployStack(stack).catch((reason) => {
+                            console.error(reason);
+                            throw new Error(`Failed to deploy stack: ${stack}`);
+                        }));
                     }
-
-                    deploymentsMap.set(stack, this.deployStack(stack).catch((reason) => {
-                        console.error(reason);
-                        throw new Error(`Failed to deploy stack: ${stack}`);
-                    }));
                 });
 
                 const deployedStack = await Promise.race(deploymentsMap.values());
@@ -95,6 +93,7 @@ export class DeploymentExecutor {
 
             cprint(PrintColors.FG_BLUE, 'No more stacks to deploy. Exiting...');
         } catch (error) {
+            console.error(error);
             console.log('Error encountered. Allowing in-progress deployments to continue, but preventing further deployments.');
             await Promise.all([ ...deploymentsMap.values() ].map((deployment) => deployment.catch(console.error)));
             throw new Error('One or more stacks failed to deploy.');
