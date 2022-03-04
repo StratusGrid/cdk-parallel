@@ -49,6 +49,7 @@ export class CdkCommand {
 
             if (this.deployOpts?.outputsFile !== undefined) {
                 commands.push(`--outputs-file ${this.deployOpts.outputsFile}`)
+                commands.push(`--change-set-name changeset${Math.random()}`);
             }
         } else if (this.type === DeploymentType.DESTROY) {
             commands.push(`destroy ${appStack}`);
