@@ -1,9 +1,9 @@
 import {spawn} from "child_process";
-
 import {DeploymentType} from "./types/deployment-type";
 import {cprint} from "./color-print";
 import {PrintColors} from "./types/print-colors";
 import { EnvironmentDeclaration } from "./types/environment-declaration";
+import * as crypto from 'crypto';
 
 export interface CdkCommandProps {
     stack: string
@@ -48,8 +48,9 @@ export class CdkCommand {
             commands.push(`deploy ${appStack}`);
 
             if (this.deployOpts?.outputsFile !== undefined) {
-                commands.push(`--outputs-file ${this.deployOpts.outputsFile}`)
-                commands.push(`--change-set-name changeset${Math.random()}`);
+                commands.push(`--outputs-file ${this.deployOpts.outputsFile}`);
+                let changeId = crypto.randomBytes(20).toString('hex');
+                commands.push(`--change-set-name changeset${changeId}`);
             }
         } else if (this.type === DeploymentType.DESTROY) {
             commands.push(`destroy ${appStack}`);
