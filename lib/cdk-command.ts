@@ -1,8 +1,8 @@
-import {spawn} from "child_process";
+import { spawn } from "child_process";
 
-import {DeploymentType} from "./types/deployment-type";
-import {cprint} from "./color-print";
-import {PrintColors} from "./types/print-colors";
+import { DeploymentType } from "./types/deployment-type";
+import { cprint } from "./color-print";
+import { PrintColors } from "./types/print-colors";
 import { EnvironmentDeclaration } from "./types/environment-declaration";
 
 export interface CdkCommandProps {
@@ -60,7 +60,7 @@ export class CdkCommand {
             commands.push(`-v`);
         }
 
-        commands.push(`--output=./cdk_stacks/${this.stack}`, `--progress events --require-approval never`)
+        commands.push(`--output=./cdk_stacks/${this.stack}`, `--progress events --require-approval never --ci`)
 
         cprint(PrintColors.FG_BLUE, `Executing command: cdk ${commands.join(' ')}.`);
 
@@ -70,14 +70,28 @@ export class CdkCommand {
             env: this.environment
         });
 
-        process.stdin.pipe(child.stdin);
-        child.stdout.pipe(process.stdout);
-        child.stderr.pipe(process.stderr);
+        var stdout = ""
+        var stderr = ""
+
+        child.stdout.on('data', (data) => {
+            stdout += data.toString();
+        }
+        );
+
+        child.stderr.on('data', (data) => {
+            stderr += data.toString();
+        }
+        );
 
         return new Promise(((resolve, reject) => {
-            child.on('error', reject)
-
-            child.on('close', code => {
+            child.on('error', (error) => {
+                reject(error);
+                console.log(stdout);
+                console.error(stderr);
+            });
+            child.on('close', (code) => {
+                console.log(stdout);
+                console.error(stderr);
                 if (code === 0) {
                     resolve()
                 } else {
