@@ -60,7 +60,7 @@ export class CdkCommand {
             commands.push(`-v`);
         }
 
-        commands.push(`--output=./cdk_stacks/${this.stack}`, `--progress events --require-approval never`)
+        commands.push(`--output=./cdk_stacks/${this.stack}`, `--progress events --require-approval never --ci`)
 
         cprint(PrintColors.FG_BLUE, `Executing command: cdk ${commands.join(' ')}.`);
 
@@ -75,20 +75,23 @@ export class CdkCommand {
 
         child.stdout.on('data', (data) => {
             stdout += data.toString();
-            process.stdout.write(data.toString());
         }
         );
 
         child.stderr.on('data', (data) => {
             stderr += data.toString();
-            process.stderr.write(data.toString());
         }
         );
 
         return new Promise(((resolve, reject) => {
-            child.on('error', reject)
-
-            child.on('close', code => {
+            child.on('error', (error) => {
+                reject(error);
+                console.log(stdout);
+                console.error(stderr);
+            });
+            child.on('close', (code) => {
+                console.log(stdout);
+                console.error(stderr);
                 if (code === 0) {
                     resolve()
                 } else {
